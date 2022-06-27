@@ -1,7 +1,8 @@
 """
     JianYing Srt Parser
-    For Asdb 
+    For Asdb
     By @P_P_P_P_P
+    Last Modify Time: 06.27.2022
 """
 import pyautogui , time , os , subprocess, json , sys, subprocess , datetime , base64 , pytz, os
 import uiautomation as auto
@@ -101,14 +102,7 @@ class Release:
 if __name__ == "__main__":
     Running_Type = sys.argv[1] if len(sys.argv) > 1 else "local"
 
-    if Running_Type == "local":
-        Etcs().Get_Paths()
-        Actions().Took_Draft_Content_Path()
-        ui.CONFIG["draft_content_directory"] = Config["Draft_Content_Json"]
-        ui.CONFIG["JianYing_Exe_Path"] = Config["JianYing_App_Path"]
-        ui.Multi_Video_Process(video_path=Config['Sources_Path'])
-
-    elif Running_Type == "actions":
+    def Action_():
         from threading import Thread
         # Run on Github
         r = Release()
@@ -131,6 +125,17 @@ if __name__ == "__main__":
             else: os.system(f"echo Error occured:{e}")
         r.Create_Assets(),r.Output_Version()
 
+
+
+    if Running_Type == "local":
+        Etcs().Get_Paths()
+        Actions().Took_Draft_Content_Path()
+        ui.CONFIG["draft_content_directory"] = Config["Draft_Content_Json"]
+        ui.CONFIG["JianYing_Exe_Path"] = Config["JianYing_App_Path"]
+        ui.Multi_Video_Process(video_path=Config['Sources_Path'])
+
+    elif Running_Type == "actions":Action_()
+
     elif Running_Type == "install": Actions().Install_JianYing()
     elif Running_Type == "nonactions":
         Etcs().Get_Paths()
@@ -141,3 +146,13 @@ if __name__ == "__main__":
             if "bv" in item.lower() or "bilibili.com" in item.lower(): vd.bilibili(item,ASDB=Config["ASDB"],download_sourcer=0)
             else: vd.aria2(item,item.split("/")[-1])
         ui.Multi_Video_Process(video_path=Config['Sources_Path'])
+
+    elif Running_Type == "scheduled": # For Asdb, Detect Update Then Do Workflow
+        subprocess.run(["git","clone","https://github.com/A-Soul-Database/Asdb-Tools.git","At"])
+        shutil.move("./At/AsdbTools","./AsdbTools")
+        from AsdbTools import Monitors
+        config = json.loads(open("./Config.json","r",encoding="utf-8"))
+        bvs = Monitors.Diff()["data"]
+        if len(bvs) > 0: config["url"] = bvs
+        open("./Config.json","w",encoding="utf-8").write(json.dumps(config,ensure_ascii=False,indent=4))
+        Action_()
