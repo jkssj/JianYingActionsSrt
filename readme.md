@@ -21,19 +21,17 @@
 文件提供了四种方式
 ```
     Args    Description
-    local(Default)   本地调用(把自己的视频/媒体放到Config.json指定的目录下进行转换)
+    localvid(Default)   本地调用(把自己的视频/媒体放到Config.json指定的目录下进行转换)
     nonactions  不安装剪映,其他和GitHub actions 一样
     install     仅安装剪映(测试)
     actions     用于GitHub actions 安装剪映并按照Config.json中的媒体链接转换文件
 ```
 
-- Github actions 转换完成后会发布到Release下
+- Github actions 转换完成后会发布到 Actions - Artifact 下
 
 #### Bug排查
 对于自动化测试而言,对于Bug的排查会有些复杂,在Release中会发布截图,可以根据这些信息排查Bug
 
-#### TODO
-- [x] 增加Webhook
 
 #### 许可证及引用
 
@@ -43,4 +41,3 @@ License GPL V3.0
 [Python-UIAutomation-for-Windows](https://github.com/yinkaisheng/Python-UIAutomation-for-Windows)  
 [Pyautogui](https://github.com/asweigart/pyautogui)
 [requests](https://github.com/psf/requests)  
-[You-Get](https://github.com/soimort/you-get)  
